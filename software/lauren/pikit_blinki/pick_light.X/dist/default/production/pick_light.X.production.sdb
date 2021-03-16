@@ -1,0 +1,24 @@
+[p GLOBOPT AUTOSTATIC IEEE_DBL IEEE_FLT PIC14 PICREGULAR PICMID ]
+[d version 1.1 ]
+[d edition pro ]
+[d chip 16F886 ]
+[d frameptr 0 ]
+"10 C:\Program Files\Microchip\xc8\v2.31\pic\sources\c90\common\sprcadd.c
+[v ___fladd __fladd `(d  1 e 4 0 ]
+"4 C:\Program Files\Microchip\xc8\v2.31\pic\sources\c90\common\Umul8_16.c
+[v __Umul8_16 _Umul8_16 `(ui  1 e 2 0 ]
+"6 C:\Program Files\Microchip\xc8\v2.31\pic\sources\c90\pic\__eeprom.c
+[v ___eecpymem __eecpymem `(v  1 e 1 0 ]
+"39
+[v ___memcpyee __memcpyee `(v  1 e 1 0 ]
+"16 C:\Users\Lauren\Desktop\pe\pee\prroojjeekktt\Brommer_Project\software\lauren\pikit_blinki\pick_light.X\newmain.c
+[v _main main `(i  1 e 2 0 ]
+"3918 C:/Program Files (x86)/Microchip/MPLABX/v5.40/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f886.h
+[v _RB0 RB0 `VEb  1 e 0 @48 ]
+"4206
+[v _TRISB0 TRISB0 `VEb  1 e 0 @1072 ]
+"16 C:\Users\Lauren\Desktop\pe\pee\prroojjeekktt\Brommer_Project\software\lauren\pikit_blinki\pick_light.X\newmain.c
+[v _main main `(i  1 e 2 0 ]
+{
+"35
+} 0
