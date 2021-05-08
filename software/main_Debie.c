@@ -22,11 +22,11 @@ void main(void)
     TRISB0 = 0;
     while(1)
     {
-        __delay_ms(100);
+        __delay_ms(1000);
         RB0 = 1;
         
-        __delay_ms(100);
-        RB0 = 1;
+        __delay_ms(1000);
+        RB0 = 0;
         
     }
     return;
