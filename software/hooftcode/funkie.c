@@ -1,3 +1,4 @@
+#include <xc.h>²
 /*  regels funksie.h:
  * 
  * 
@@ -83,6 +84,7 @@ void init_clk(int Frek)
     
     
 }
+
 void interup_off(void)
 {   
     //opzetten interupt volgens datacheet p31///////////////////////////////////
@@ -209,8 +211,8 @@ void zet_timer1_op(void)
     ////////////////////////////////////////////////////////////////////////////
     
     // prescalen timer /////////////////////////////////////////////////////////
-    //TMR1H = 0; //eerste preescaler bits
-    //TMR1L = 0; // laatste prescaler bits
+   TMR1H = 0xff; //eerste preescaler bits
+    TMR1L = 0; // laatste prescaler bits
     ////////////////////////////////////////////////////////////////////////////
 }
 void zet_timer1_aff(void)
@@ -247,7 +249,9 @@ void __interrupt() interupt_Handler(void)
     }
      if(RBIF = 1) //bij interupt van poort b 
     {
-        // coor te weete wele pin raat ik aan om kreatief te zijn dus ui sukses! 
+        // coor te weete wele pin raat ik aan om kreatief te zijn dus ui sukses!
+         zet_timer1_op();
+         SLEEP();
 
         //plaats funksie xat er in dit geval gebeurt moet worden
         RBIF = 0;
@@ -256,6 +260,7 @@ void __interrupt() interupt_Handler(void)
     {
         //plaats funksie xat er in dit geval gebeurt moet worden
         TMR1IF = 0;
+        
     }
     
     ////////////////////////////////////////////////////////////////////////////
