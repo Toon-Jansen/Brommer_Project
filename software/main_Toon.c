@@ -26,7 +26,7 @@ void main(void)
         RB0 = 1;
         
         __delay_ms(100);
-        RB0 = 1;
+        RB0 = 0;
         
     }
     return;
