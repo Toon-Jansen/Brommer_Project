@@ -80,6 +80,19 @@ void init_clk(int Frek)
         SCS = 1; //zet inwendige osilator als sisteem osilator
     break;
     ////////////////////////////////////////////////////////////////////////////
+    
+    //zet interne klok 1Mhz/////////////////////////////////////////////////////
+    case 3: //ben niet zeker dat deze al goet werkt
+        IRCF0 = 1;
+        IRCF1 = 0;
+        IRCF2 = 0;
+         
+        OSTS = 1; // run van externe osilator
+        HTS = 1; //zet HFinitOSc stabiel
+        LTS = 1; //zet LFinitOSc stabiel
+        SCS = 0; //zet externe osilator als sisteem osilator
+    break;
+    ////////////////////////////////////////////////////////////////////////////
     }
     
     
