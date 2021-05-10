@@ -1,4 +1,4 @@
-#include <xc.h>²
+#include <xc.h>
 /*  regels funksie.h:
  * 
  * 
@@ -6,20 +6,27 @@
  *  -   WANEER TOEVOEGEN FUNKSIE ALTIJT:
  *      1) VERWIJDER DIT BESTANT FUNKSIES.H UIT PROJECT
  *      2) GA NAAR GITUP EN KOPJEER FUNKSIES.H NAAR JE PROJECT
- *      3) VOEG FUNKSIE TOE
- *      4) COPJEER FUNKSIES.H NAAR GITHUP EN UPLOWD DA
+ *      3) VOEG FUNCTIE TOE
+ *      4) KOPIEER FUNKSIES.H NAAR GITHUP EN UPLOWD DEZE
  *!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  * 
  * 
  * 
  *  -   enkel funksies inzetten die voledig werken (maaken van funksies gebeurt 
  *      in testfunksies_debie.h of testfunksies_toon.h
+ *
  *  -   wie een wie zorgt voor een eror in FUNKSIES.H moet de andere fristie 
  *      trakteeren
+ * 
+ *  -   Beloftes die gemaakt zijn tijden momenten van wanhopigheid moeten
+ *      nageleefd worden.
+ 
  *  -   beschrijf de stappen van uw funksie en houw het ordelijk
+ *
  *  -   waneer een funksie af is zet men de naam van de funksie met korte 
  *      beschrijving in de funksie lookuptabel
  *  -   max lente regel is tot de rode lijn 
+ *
  *  -   bij anpasen van een funksie meld de andere  
  */
 

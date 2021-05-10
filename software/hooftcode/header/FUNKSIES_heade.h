@@ -1,37 +1,37 @@
-/*  regels funksie.h:
+/*  regels functie.h:
  * 
  * 
  *!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- *  -   WANEER TOEVOEGEN FUNKSIE ALTIJT:
- *      1) VERWIJDER DIT BESTANT FUNKSIES.H UIT PROJECT
- *      2) GA NAAR GITUP EN KOPJEER FUNKSIES.H NAAR JE PROJECT
- *      3) VOEG FUNKSIE TOE
- *      4) COPJEER FUNKSIES.H NAAR GITHUP EN UPLOWD DA
+ *  -   WANNEER TOEVOEGEN FUNCTIE ALTIJD:
+ *      1) VERWIJDER DIT BESTAND FUNCTIES.H UIT PROJECT
+ *      2) GA NAAR GITHUB EN KOPIEER FUNKSIES.H NAAR JE PROJECT
+ *      3) VOEG FUNCTIE TOE
+ *      4) KOPIEER FUNKSIES.H NAAR GITHUB EN UPLOAD DEZE
  *!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  * 
  * 
  * 
- *  -   enkel funksies inzetten die voledig werken (maaken van funksies gebeurt 
+ *  -   Enkel functies inzetten die volledig werken (maken van functies gebeurt 
  *      in testfunksies_debie.h of testfunksies_toon.h
- *  -   wie een wie zorgt voor een eror in FUNKSIES.H moet de andere fristie 
- *      trakteeren
- *  -   beschrijf de stappen van uw funksie en houw het ordelijk
- *  -   waneer een funksie af is zet men de naam van de funksie met korte 
- *      beschrijving in de funksie lookuptabel
+ *  -   Wie zorgt voor een eror in FUNKSIES.H moet de andere fristie 
+ *      trakteren
+ *  -   beschrijf de stappen van uw functie en hou het ordelijk
+ *  -   waneer een functie af is zet men de naam van de functie met korte 
+ *      beschrijving in de functie lookup-tabel
  *  -   max lente regel is tot de rode lijn 
- *  -   bij anpasen van een funksie meld de andere  
+ *  -   bij aanpasen van een functie meld aan de andere  
  */
 
-/*  funksie lookup tabel: 
- *  -   init_clk(int) :inisializeert vlok op intern 31 of 250khz of extern 1Mhz
- *  -   interup_off() :zet alle interupts af  
- *  -   interupt_poort_B_op(int) :zet de interupt van megegeven pin op poort B
- *  -   interupt_poort_B_aff(int) :zet interupt af van megegeven pin bij 8 
- *      allepine van poort B
- *  -   zet_timer1_op() :zet timer1 op + overflow interupt
+/*  functie lookup-tabel: 
+ *  -   init_clk(int) :initializeer klok op intern 31 of 250khz of extern 1Mhz
+ *  -   interup_off() :zet alle interrupts af  
+ *  -   interupt_poort_B_op(int) :zet de interrupt van meegegeven pin op poort B
+ *  -   interupt_poort_B_aff(int) :zet interrupt af van meegegeven pin bij 8 
+ *      alle pins van poort B
+ *  -   zet_timer1_op() :zet timer1 op + overflow interrupt
  *  -   zet_timer1_aff() :zet timer1 af
  *  -   interupt_Handler() : is van bij welke interupt hem wat moet doe : deze 
- *      moet nog aan gevult worden als ge een interupt hebt!!
+ *      moet nog aan gevuld worden als er een interrupt is!!
  */
 
 void init_clk(int);
