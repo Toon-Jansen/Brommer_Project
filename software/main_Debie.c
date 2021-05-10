@@ -14,13 +14,29 @@
 
 void main()
 {
-  init_clk(3);  
+  init_clk(3); 
+  TRISB0 = 0;
   
   init_uart(1000000);
+  RB0 = 0;
 
   do
   {
-    uart_schrijf(0b01010101);
-    __delay_ms(100);
+      if(uart_lees() == 0x31)
+      {
+          
+              RB0 = 1;
+              __delay_ms(1000);
+              RB0 = 0;
+              __delay_ms(1000);
+              RB0 = 1;
+              __delay_ms(1000);
+              RB0 = 0;
+              __delay_ms(1000);
+              
+              
+          
+          
+      }
   }while(1);
 }
