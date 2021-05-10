@@ -1,83 +1,70 @@
-/*
- * File:   main.c
- * Author: Lauren
- *
- * Created on 8 mei 2021, 12:16
- */
-
 #define _XTAL_FREQ 8000000
 #include <xc.h>
-#include "hooftcode/header/Debie_header.h"
-#include "hooftcode/header/FUNKSIES_heade.h"
 #include "hooftcode/header/Toon_header.h"
+
 #include "hooftcode/header/configerasenbits_pic.h"
 
-
-
-/*Very Important - change _XTAL_FREQ to match target clock 
-  
-  This program initialised UART and port for LEDs and waits for a character to be received on the serial port.
-	It displays character on LEDS (active low) and then returns it on serial port.
-*/
-
-
-// Function Prototypes
-char UART_Init(const long int baudrate);
-char UART_Data_Ready();
-char UART_Read();
-void UART_Write(char data);
-
-led_display(unsigned char value);
-
-// Main Function
-void main()
+void I2C_Initialize(const unsigned long feq_K) //Begin IIC as master
 {
-    unsigned char 8;
-    
-   TRISD = 0x00;  // PORTD as outputs for LEDS
-   UART_Init(9600);
+  TRISC3 = 1;  TRISC4 = 1;  //Set SDA and SCL pins as input pins
+
+  SSPCON  = 0b00101000;    //pg84/234
+  SSPCON2 = 0b00000000;    //pg85/234
+
+  SSPADD = (_XTAL_FREQ/(4*feq_K*100))-1; //Setting Clock Speed pg99/234
+  SSPSTAT = 0b00000000;    //pg83/234
+}
+
+void I2C_Hold()
+{
+    while (   (SSPCON2 & 0b00011111)    ||    (SSPSTAT & 0b00000100)   ) ; //check the this on registers to make sure the IIC is not in progress
+}
+
+void I2C_Begin()
+{
+  I2C_Hold();  //Hold the program is I2C is busy 
+  SEN = 1;     //Begin IIC pg85/234
+}
+void I2C_End()
+{
+  I2C_Hold(); //Hold the program is I2C is busy 
+  PEN = 1;    //End IIC pg85/234
+}
+
+void I2C_Write(unsigned data)
+{
+  I2C_Hold(); //Hold the program is I2C is busy
+  SSPBUF = data;         //pg82/234
+}
+
+unsigned short I2C_Read(unsigned short ack)
+{
+  unsigned short incoming;
+  I2C_Hold();
+  RCEN = 1;
+
+  I2C_Hold();
+  incoming = SSPBUF;      //get the data saved in SSPBUF
+
+  I2C_Hold();
+  ACKDT = (ack)?0:1;    //check if ack bit received 
+  ACKEN = 1;          //pg 85/234
+
+  return incoming;
+}
+
+void main(void) 
+{ I2C_Initialize(100); //Initialize I2C Master with 100KHz clock
+
+while(1)
+  {
+   I2C_Begin();       
+   I2C_Write(0xD0); 
+   I2C_Write(0x88); 
+   I2C_Write(0xFF); 
+   I2C_End();
    
-   while(1)
-   {
-                  // display on LEDs
-       __delay_ms(100);
-       UART_Write(value);            // write it back 
-   }
+   __delay_ms(1000);
+
 }
-
- // functions
-
-led_display(unsigned char value){
-
-    PORTD = ~value;
-}
-
-char UART_Init(const long int baudrate){
-	unsigned int x;
-	x = (_XTAL_FREQ - baudrate*16)/(baudrate*16);
-	BRGH = 1;
-	SPBRG = x;
-	  SYNC = 0;
-	  SPEN = 1;
-          TRISC7 = 1;
-          TRISC6 = 1;
-          CREN = 1;
-          TXEN = 1;
-	  return 1;	
-}
-
-
-char UART_Data_Ready(){
-   return RCIF;
-}
-
-char UART_Read(){
- 
-  while(!RCIF);
-  return RCREG;
-}
-
-void UART_Write(char data){
-  while(!TRMT);
-  TXREG = data;
 }
