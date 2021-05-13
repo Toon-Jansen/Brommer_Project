@@ -15,28 +15,24 @@
 void main()
 {
   init_clk(3); 
-  TRISB0 = 0;
+  TRISB0 = 0;//set
+  TRISB1 = 0;//cs
+    TRISB2 = 0;//cs
   
   init_uart(1000000);
-  RB0 = 0;
+  RB0 = 1;
+    RB1 = 0;
 
   do
   {
-      if(uart_lees() == 0x31)
-      {
-          
-              RB0 = 1;
-              __delay_ms(1000);
-              RB0 = 0;
-              __delay_ms(1000);
-              RB0 = 1;
-              __delay_ms(1000);
-              RB0 = 0;
-              __delay_ms(1000);
+
+
+     RB2 = 0;
+    uart_schrijf(49);
               
-              
-          
-          
-      }
+    __delay_ms(100);
+     RB2 = 1;
+    __delay_ms(100);
+      
   }while(1);
 }

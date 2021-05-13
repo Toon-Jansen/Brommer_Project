@@ -306,7 +306,7 @@ void init_uart(int freq)
     
 }
 
-void uart_schrCRENijf(int data)
+void uart_schrijf(int data)
 {
    
   while(TRMT == 0) //kijk dat de pic nog bezig is met verzende data
