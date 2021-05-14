@@ -5,7 +5,7 @@
  * Created on 8 mei 2021, 12:16
  */
 
-#define _XTAL_FREQ 250000
+#define _XTAL_FREQ 1000000
 #include <xc.h>
 #include "hooftcode/header/Debie_header.h"
 #include "hooftcode/header/FUNKSIES_heade.h"
@@ -63,17 +63,30 @@ unsigned short I2C_Read(unsigned short ack)
 
 void main(void) 
 {
-    I2C_Initialize(100); //Initialize I2C Master with 100KHz clock
+    init_clk(4);
+    I2C_Initialize(2000); //Initialiseer I2C Master met 95KHz clock
+    unsigned short I2C_D = 0; //var voor de ontvangen data
 
 while(1)
   {
-   I2C_Begin();       
-   I2C_Write(0xD0); 
-   I2C_Write(0x88); 
-   I2C_Write(0xFF); 
+   I2C_Begin(); //I2C startconditie op SDA zetten
+   I2C_Write(0xD0); //Adres slave = 1101 000x (0xDx) met R/not(W)
+   I2C_Write(0x6B); //Adres in slave 6B = power con register 1
+   I2C_Begin(); //Opnieuw start zodat pointer juist staat voor lezen
+   I2C_Write(0xD1); //Slave adres met read
+   I2C_D = I2C_Read(0); //lees data en NACK zodat slave geen data meer zend
    I2C_End();
-   
-   __delay_ms(1000);
+   I2C_Begin();
+   I2C_Write(I2C_D);
+   I2C_End(); //I2C stopconditie op SDA zetten
+   if(I2C_D == I2C_D)
+   {
+       RB0 = 1;
+   }else
+   {
+       RB0 = 0;
+   }
+   __delay_ms(10);
 
 }
 }
