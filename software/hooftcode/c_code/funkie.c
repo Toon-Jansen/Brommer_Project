@@ -52,10 +52,11 @@ void init_clk(int Frek)
         IRCF1 = 0;
         IRCF2 = 0;
          
-        OSTS = 0; // run van inwendige osilator
+           
+        OSTS = 0; // run van externe osilator
         HTS = 1; //zet HFinitOSc stabiel
         LTS = 1; //zet LFinitOSc stabiel
-        SCS = 1; //zet inwendige osilator als sisteem osilator
+        SCS = 1; //zet externe osilator als sisteem osilator
     break;
     ////////////////////////////////////////////////////////////////////////////
     
@@ -66,10 +67,10 @@ void init_clk(int Frek)
         IRCF1 = 1;
         IRCF2 = 0;
          
-        OSTS = 1; // run van externe osilator
+          OSTS = 0; // run van externe osilator
         HTS = 1; //zet HFinitOSc stabiel
         LTS = 1; //zet LFinitOSc stabiel
-        SCS = 0; //zet externe osilator als sisteem osilator
+        SCS = 1; //zet externe osilator als sisteem osilator
         
     break;
     ////////////////////////////////////////////////////////////////////////////
@@ -90,14 +91,14 @@ void init_clk(int Frek)
     
     //zet interne klok 1Mhz/////////////////////////////////////////////////////
     case 3: //ben niet zeker dat deze al goet werkt
-        IRCF0 = 1;
+        IRCF0 = 0;
         IRCF1 = 0;
-        IRCF2 = 0;
+        IRCF2 = 1;
          
-        OSTS = 1; // run van externe osilator
+        OSTS = 0; // run van externe osilator
         HTS = 1; //zet HFinitOSc stabiel
         LTS = 1; //zet LFinitOSc stabiel
-        SCS = 0; //zet externe osilator als sisteem osilator
+        SCS = 1; //zet externe osilator als sisteem osilator
     break;
     ////////////////////////////////////////////////////////////////////////////
     
@@ -302,4 +303,36 @@ void __interrupt() interupt_Handler(void)
     ////////////////////////////////////////////////////////////////////////////
    
    
+}
+void init_uart(int freq)
+{ 
+    //berekenen bautrate ///////////////////////////////////////////////////////
+    SPBRG = 25; //zet bautrate juist
+    SYNC = 0; //zet eusart op asinchroon
+    SPEN = 1; //enabel de serieele poort
+    TRISC7 = 1; //zet pin 7 van c poort(rx) in input
+    TRISC6 = 0; //zet pin 6 van c poort(tx) in output
+    CREN = 1; //eabel voorduurent recive
+    TXEN = 1; //enabel vorduurent verzenden    
+    BRG16 = 1;//Enables Transmission   
+    BRGH = 1;//Returns 0 to indicate UART initialization failed
+    
+}
+
+void uart_schrijf(int data)
+{
+   
+  while(TRMT == 0) //kijk dat de pic nog bezig is met verzende data
+  {   
+  }
+  TXREG = data; //schrijf daata naar het rigister dat de data verstuurt
+}
+
+int uart_lees(void) //NOTE kijk eers na dat er data is want anders gaat deze in 
+                     //een loob
+{
+  while(RCIF == 0) //kijk of er lees dat ontvange is
+  {
+  }
+  return RCREG; //return de geleze data
 }

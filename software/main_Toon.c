@@ -1,15 +1,15 @@
 /*
- * File:   main.c
- * Author: Lauren
+ * File:   main_Toon.c
+ * Author: Toon
  *
  * Created on 8 mei 2021, 12:16
  */
 
 #define _XTAL_FREQ 1000000
 #include <xc.h>
+#include "hooftcode/header/Toon_header.h"
 #include "hooftcode/header/Debie_header.h"
 #include "hooftcode/header/FUNKSIES_heade.h"
-#include "hooftcode/header/Toon_header.h"
 #include "hooftcode/header/configerasenbits_pic.h"
 
 void I2C_Initialize(const unsigned long feq_K) //Begin IIC as master
@@ -90,4 +90,3 @@ while(1)
 
 }
 }
-

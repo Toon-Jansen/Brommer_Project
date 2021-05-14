@@ -42,3 +42,6 @@ void zet_timer1_op(void);
 void zet_timer1_aff(void);
 void __interrupt() interupt_Handler(void);
  
+void init_uart(int);
+void uart_schrijf(int);
+int uart_lees(void);
