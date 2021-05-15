@@ -104,9 +104,9 @@ void init_clk(int Frek)
     
     //zet interne klok 1Mhz/////////////////////////////////////////////////////
     case 4: //ben niet zeker dat deze al goet werkt
-        IRCF0 = 1;
-        IRCF1 = 1;
-        IRCF2 = 0;
+        IRCF0 = 0;
+        IRCF1 = 0;
+        IRCF2 = 1;
          
         OSTS = 1; // run van externe osilator
         HTS = 1; //zet HFinitOSc stabiel
