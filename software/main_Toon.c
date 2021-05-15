@@ -69,8 +69,8 @@ void config_Ac(void){
     __delay_ms(100);
     I2C_Begin();
     I2C_Write(0xD0);
-    I2C_Write(0x68);
-    I2C_Write(0x07);
+    I2C_Write(0x68); //sig reset register
+    I2C_Write(0x07); //reset meters
     I2C_End();
     __delay_ms(100);
     I2C_Begin();
@@ -84,7 +84,12 @@ void config_Ac(void){
     I2C_Write(0x37); //interrupt config register
     I2C_Write(0x20); //zorg dat interrupt pin hoog blijft tot ik int reg lees
     I2C_Write(0x01); //genereer int als data klaar staat
-    I2C_End();8
+    I2C_End();
+    I2C_Begin();
+    I2C_Write(0xD0);
+    I2C_Write(0x1C); //configure accelerometer
+    I2C_Write(0x18); //selecteer scale van +-16g
+    I2C_End();
 }
 void main(void) 
 {
@@ -115,7 +120,14 @@ while(1)
        RB0 = 0;
    }
     */
-    config_Ac();
+    I2C_Begin();
+    I2C_Write(0xD0);
+    I2C_Write(0x3F);
+    I2C_Begin();
+    I2C_Write(0xD1);
+    I2C_Read(1);
+    I2C_Read(0);
+    I2C_End();
    __delay_ms(1000);
 
 }

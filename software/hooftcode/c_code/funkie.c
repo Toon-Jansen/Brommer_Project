@@ -278,16 +278,16 @@ void __interrupt() interupt_Handler(void)
     }
      if(INTF = 1) //bij externe interupt
     {
-       //plaats funksie xat er in dit geval gebeurt moet worden
+       //plaats functie dat in dit geval moet gebeuren
         INTF = 0;
     }
      if(RBIF = 1) //bij interupt van poort b 
     {
-        // coor te weete wele pin raat ik aan om kreatief te zijn dus ui sukses!
+        // voor de tweede wele pin raad ik aan om creatief te zijn dus ueh succes!
          zet_timer1_op();
          SLEEP();
 
-        //plaats funksie xat er in dit geval gebeurt moet worden
+        //plaats functie dat in dit geval moet gebeuren
         RBIF = 0;
     }
     if(TMR1IF = 1) //interupt va timer
