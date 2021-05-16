@@ -27,49 +27,51 @@ int Wwoort_lente = 6;
 
 
 void main()
-{
-  init_clk(3); 
-  TRISB0 = 0;//set
-  TRISB1 = 0;//cs
-    
-  
-  init_uart(1000000);
-  int data_O =0;  
-  
-  
- 
+{ 
   do
   {    
-      PORTB = 1;//enabel cs en zet de setpin hoog
-      __delay_us(100);
-      for(int teller = 0; teller < 49; teller++)
-      {
-          if(RCIF == 1) //kijk of er lees dat ontvange is
-          {
-              data_O = RCREG;
-              if(data_O == 'T')
-              {
-                 uart_schrijf('L');
-                 data_O = 0;
-                 __delay_ms(1000);
-                 if(RCIF == 1 && RCREG == 'O')
-                 {
-                    data_O = 0;
-                    for(int x = 0; x < Wwoort_lente; x++)
-                    {
-                         uart_schrijf(Wwoort[x]);
-                    }
-                     
-                 }
-  
-              }
-          }
-          __delay_us(100);
-      }
-      PORTB = 3; //disabel cs en zet de setpin hoog
-      __delay_ms(100);
-    
-   
+      int kut =ask_KeyKart();
+
     
   }while(1);
+}
+//funksie returnt 1 bij de juiste keykart en 0 bij geen of de fuite keykart
+int ask_KeyKart(void)
+{
+    for(int teller = 0; teller < 2000; teller++) //dient om 2 secont te zoekken 
+                                                 //naar de keykart
+    {
+        
+        if(RCIF == 1 && RCREG == 'L')
+        {
+            int wwachtwoort[6];
+            int corr = 0;
+            uart_schrijf('O');
+            for(int x = 0; x< Wwoort_lente;x++)
+            {
+               wwachtwoort[x] = uart_lees();
+            }
+            
+            for(int x = 0; x< Wwoort_lente;x++)
+            {
+               if(wwachtwoort[x] != Wwoort[x])
+               {
+                   corr = 1;
+               }
+            }
+            if(corr == 0)
+            {
+                return 1;    
+            }
+            
+            
+        }
+        uart_schrijf('T');
+        __delay_ms(1);
+        
+    }
+    return 0;
+    
+    
+    
 }
