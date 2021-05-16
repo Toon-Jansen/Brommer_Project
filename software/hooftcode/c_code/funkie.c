@@ -1,4 +1,5 @@
 #include <xc.h>
+#define _XTAL_FREQ 1000000
 /*  regels funksie.h:
  * 
  * 
@@ -304,6 +305,91 @@ void __interrupt() interupt_Handler(void)
    
    
 }
+
+void I2C_Initialize(const unsigned long feq_K) //Begin I2C com als Master
+{
+  TRISC3 = 1;  TRISC4 = 1;  //Maak RC3 en RC4, SDA en SCL, input pins
+
+  SSPCON  = 0b00101000;    //enable serial port en gebruik SDA & SCL
+                           //master mode speed = FOSC/(4*(SSPADD+1))
+  SSPCON2 = 0b00000000;    //Idle mode aanzetten 
+
+  SSPADD = (_XTAL_FREQ/(4*feq_K*100))-1; //user bepaalde snelheid van I2C bus
+  SSPSTAT = 0b00000000;    //Info van de bus leegmaken
+}
+
+void I2C_Hold()
+{
+    while (   (SSPCON2 & 0b00011111)    ||    (SSPSTAT & 0b00000100)   ) ; 
+                           //check dat de I2C bus niet langer in gebruik is
+}
+
+void I2C_Begin()
+{
+  I2C_Hold();  //Wacht tot bus beschikbaar is
+  SEN = 1;     //Stuur start conditie
+}
+
+void I2C_End()
+{
+  I2C_Hold(); //Wacht tot bus beschikbaar is
+  PEN = 1;    //Stuur stop conditie
+}
+
+void I2C_Write(unsigned data)
+{
+  I2C_Hold(); //Wacht tot bus beschikbaar is
+  SSPBUF = data;         //stuur data in buffer op I2C bus
+}
+
+unsigned short I2C_Read(unsigned short ack)
+{
+  unsigned short incoming; //var voor aangekregen data
+  I2C_Hold(); //Wacht tot bus beschikbaar is
+  RCEN = 1;   //Klaar zetten voor data te ontvangen
+
+  I2C_Hold(); //Wacht tot bus beschikbaar is
+  incoming = SSPBUF;      //zet aangekregen data van buffer naar var
+
+  I2C_Hold(); //Wacht tot bus beschikbaar is
+  ACKDT = (ack)?0:1;    //check if ack bit received 
+  ACKEN = 1;          //lees Ack bit in
+
+  return incoming; //stuur aagekregen data terug
+}
+
+void config_Ac(void){
+    I2C_Begin();
+    I2C_Write(0xD0); //Schrijf adres van accel (68+R/not(W))
+    I2C_Write(0x6B); //power mngmt 1
+    I2C_Write(0x80); //Voer reset uit
+    I2C_End();
+    __delay_ms(100);
+    I2C_Begin();
+    I2C_Write(0xD0);
+    I2C_Write(0x68); //sig reset register
+    I2C_Write(0x07); //reset meters
+    I2C_End();
+    __delay_ms(100);
+    I2C_Begin();
+    I2C_Write(0xD0);
+    I2C_Write(0x6B); //open power mngmt 1 opnieuw
+    I2C_Write(0x2D); //zet lowpowermode aan en gebruikt ext 19.2MHz
+    I2C_Write(0x47); //(schrijft door naar 6C) 5Hz wake up cycle en gyro standby
+    I2C_End();
+    I2C_Begin();
+    I2C_Write(0xD0);
+    I2C_Write(0x37); //interrupt config register
+    I2C_Write(0x30); //zorg dat interrupt pin hoog blijft tot ik reg lees
+    I2C_Write(0x01); //genereer int als data klaar staat
+    I2C_End();
+    I2C_Begin();
+    I2C_Write(0xD0);
+    I2C_Write(0x1C); //configure accelerometer
+    I2C_Write(0x00); //selecteer scale van +-16g
+    I2C_End();
+}
+
 void init_uart(int freq)
 { 
     //berekenen bautrate ///////////////////////////////////////////////////////
