@@ -1,3 +1,17 @@
+//kode kaykart//////////////////////////////////////////////////////////////////
+/*
+ * beschrijving:
+ * 
+ * 1) de kykart gaat geduurende 5ms kijken of hij de leter "T" aankrijgt
+ * 
+ * a) zo ja gaat deze de leter "L" antwoorden warop deze 100ms wacht 
+ *    op het antwoort is dit antwoort de letter "O" gaat deze het wachtwoort 
+ *    doorstuuren zoniet kijkt deze trug verder dat deze de letter "T" ontvagt 
+ *    of stopt met kijken voor 100ms
+ * b) zo nee gaat deze voor 100ms stoppe met kijken
+ * 
+ */
+
 #define _XTAL_FREQ 1000000
 #include <xc.h>
 #include "hooftcode/header/Debie_header.h"
@@ -5,34 +19,59 @@
 #include "hooftcode/header/Toon_header.h"
 #include "hooftcode/header/configerasenbits_pic.h"
 //making uart
-
-
+int Wwoort[6] = {'D','E','B','T','O','N'};
+int Wwoort_lente = 6;
 
 
 
 
 
 void main()
-{
-  init_clk(3); 
-  TRISB0 = 0;//set
-  TRISB1 = 0;//cs
-    TRISB2 = 0;//cs
-  
-  init_uart(1000000);
-  RB0 = 1;
-    RB1 = 0;
-
+{ 
   do
-  {
+  {    
+      int kut =ask_KeyKart();
 
-
-     RB2 = 0;
-    uart_schrijf(49);
-              
-    __delay_ms(100);
-     RB2 = 1;
-    __delay_ms(100);
-      
+    
   }while(1);
+}
+//funksie returnt 1 bij de juiste keykart en 0 bij geen of de fuite keykart
+int ask_KeyKart(void)
+{
+    for(int teller = 0; teller < 2000; teller++) //dient om 2 secont te zoekken 
+                                                 //naar de keykart
+    {
+        
+        if(RCIF == 1 && RCREG == 'L')
+        {
+            int wwachtwoort[6];
+            int corr = 0;
+            uart_schrijf('O');
+            for(int x = 0; x< Wwoort_lente;x++)
+            {
+               wwachtwoort[x] = uart_lees();
+            }
+            
+            for(int x = 0; x< Wwoort_lente;x++)
+            {
+               if(wwachtwoort[x] != Wwoort[x])
+               {
+                   corr = 1;
+               }
+            }
+            if(corr == 0)
+            {
+                return 1;    
+            }
+            
+            
+        }
+        uart_schrijf('T');
+        __delay_ms(1);
+        
+    }
+    return 0;
+    
+    
+    
 }
