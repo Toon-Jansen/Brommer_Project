@@ -101,6 +101,19 @@ void init_clk(int Frek)
         SCS = 1; //zet externe osilator als sisteem osilator
     break;
     ////////////////////////////////////////////////////////////////////////////
+    
+    //zet interne klok 1Mhz/////////////////////////////////////////////////////
+    case 4: //ben niet zeker dat deze al goet werkt
+        IRCF0 = 0;
+        IRCF1 = 0;
+        IRCF2 = 1;
+         
+        OSTS = 1; // run van externe osilator
+        HTS = 1; //zet HFinitOSc stabiel
+        LTS = 1; //zet LFinitOSc stabiel
+        SCS = 0; //zet externe osilator als sisteem osilator
+    break;
+    ////////////////////////////////////////////////////////////////////////////
     }
     
     
@@ -265,16 +278,16 @@ void __interrupt() interupt_Handler(void)
     }
      if(INTF = 1) //bij externe interupt
     {
-       //plaats funksie xat er in dit geval gebeurt moet worden
+       //plaats functie dat in dit geval moet gebeuren
         INTF = 0;
     }
      if(RBIF = 1) //bij interupt van poort b 
     {
-        // coor te weete wele pin raat ik aan om kreatief te zijn dus ui sukses!
+        // voor de tweede wele pin raad ik aan om creatief te zijn dus ueh succes!
          zet_timer1_op();
          SLEEP();
 
-        //plaats funksie xat er in dit geval gebeurt moet worden
+        //plaats functie dat in dit geval moet gebeuren
         RBIF = 0;
     }
     if(TMR1IF = 1) //interupt va timer
