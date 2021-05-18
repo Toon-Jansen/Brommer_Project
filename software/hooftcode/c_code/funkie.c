@@ -390,6 +390,88 @@ void config_Ac(void){
     I2C_End();
 }
 
+unsigned int lees(void){
+    signed char I2C_DH = 0; //var voor de ontvangen data in High reg
+    unsigned char I2C_DL = 0; //var voor de ontvangen data in Low reg
+    unsigned int rek = 0;
+    unsigned char ref = 0xff;
+    unsigned int tot = 0;//var voor de totale waarde van accel
+    I2C_Begin();
+    I2C_Write(0xD0);
+    I2C_Write(0x3D);
+    I2C_Begin();
+    I2C_Write(0xD1);
+    I2C_DH = I2C_Read(1);
+    I2C_DL = I2C_Read(0);
+    I2C_End();
+    for(int i = 0; i < 4; i++){
+        //while(RC0 == 0); //wacht tot data klaar staat om gelezen te worden
+        I2C_Begin();
+        I2C_Write(0xD0);
+        I2C_Write(0x3D);
+        I2C_Begin();
+        I2C_Write(0xD1);
+        I2C_DH = I2C_Read(1);
+        I2C_DL = I2C_Read(0);
+        I2C_End();
+        if(I2C_DH < 0){
+            I2C_DH = ref - I2C_DH;
+            I2C_DH += 1;
+        }
+        rek = I2C_DH;
+        rek = rek<<8;
+        rek = rek | I2C_DL;
+        rek = rek>>2;
+        tot += rek;
+        rek = 0;
+    }
+    return tot;
+    }
+
+void init_piep(void){
+    TRISB2 = 0;
+    TRISB5 = 0;
+    RB2 = 0;
+    RB5 = 0;
+}
+
+void piep(short s){
+    RB2 = 0;
+    RB5 = 0;
+    if(s == 1){
+        for(short j = 0; j < 3; j++){
+            for(short i = 301; i>0; i--){
+                RB5 = 0;
+                __delay_us(1);
+                RB2 = 1;
+                __delay_us(249);
+                RB2 = 0;
+                __delay_us(1);
+                RB5 = 1;
+                __delay_us(249);
+                RB5 = 0;
+            }
+            __delay_ms(175);
+        }
+    }
+    if(s == 2){
+        for(short j = 0; j < 3; j++){
+            for(short i = 1101; i>0; i--){
+                RB5 = 0;
+                __delay_us(1);
+                RB2 = 1;
+                __delay_us(249);
+                RB2 = 0;
+                __delay_us(1);
+                RB5 = 1;
+                __delay_us(249);
+                RB5 = 0;
+            }
+            __delay_ms(550);
+        }
+    }
+}
+
 void init_uart(int freq)
 { 
     //berekenen bautrate ///////////////////////////////////////////////////////
