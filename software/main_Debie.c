@@ -11,16 +11,18 @@
  * b) zo nee gaat deze voor 100ms stoppe met kijken
  * 
  */
-
+#include "hooftcode/header/configerasenbits_pic.h"
 #define _XTAL_FREQ 1000000
 #include <xc.h>
-#include "hooftcode/header/Debie_header.h"
+
 #include "hooftcode/header/FUNKSIES_heade.h"
-#include "hooftcode/header/Toon_header.h"
-#include "hooftcode/header/configerasenbits_pic.h"
+
+//#include "hooftcode/header/Debie_header.h"
+//#include "hooftcode/header/FUNKSIES_heade.h"
+//#include "hooftcode/header/Toon_header.h"
+
 //making uart
-int Wwoort[6] = {'D','E','B','T','O','N'};
-int Wwoort_lente = 6;
+
 
 
 
@@ -28,15 +30,57 @@ int Wwoort_lente = 6;
 
 void main()
 { 
+        TRISB1 =0; //cs
+        TRISC3 = 0;
+          TRISC4 = 0;
+
+    TRISB0 =0; //set
+    TRISA1 = 1;
+    ANS1 = 0;
+    
+   
+   
+    init_clk(3); 
+   // interup_off();
+    init_uart(1000000);
+    RB0=0;
+    RB1=1;
+     RC3 = 1;
+     RC4 = 0;
+  
+    int a;
   do
   {    
-      int kut =ask_KeyKart();
+      
+      uart_schrijf(49);
+      __delay_ms(100);
+      /*
+      if(RCIF)
+      {
+          RC3 = 1;
+           a = uart_lees();
+          
+          
+      }
+      else
+      {
+          RC3 = 0;
+         
+      }
+        
+      if(a ==49)
+      {
+          RC4 == 1;
+          
+          
+      }*/
+    
 
     
   }while(1);
 }
 //funksie returnt 1 bij de juiste keykart en 0 bij geen of de fuite keykart
-int ask_KeyKart(void)
+/*int ask_KeyKart(void)
 {
     for(int teller = 0; teller < 2000; teller++) //dient om 2 secont te zoekken 
                                                  //naar de keykart
@@ -74,4 +118,4 @@ int ask_KeyKart(void)
     
     
     
-}
+}*/
