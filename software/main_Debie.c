@@ -11,7 +11,7 @@
  * b) zo nee gaat deze voor 100ms stoppe met kijken
  * 
  */
-#include "hooftcode/header/configerasenbits_pic.h"
+/*#include "hooftcode/header/configerasenbits_pic.h"
 #define _XTAL_FREQ 1000000
 #include <xc.h>
 
@@ -22,7 +22,28 @@
 //#include "hooftcode/header/Toon_header.h"
 
 //making uart
-
+void init_pinout(void)
+{
+    //rf
+    TRISB0 = 0;
+    TRISB1 = 0;
+    //buttens
+    TRISA1 = 1; 
+    TRISA2 = 1; 
+    
+    ANS1 = 0; 
+    ANS2 = 0; 
+    
+    //moter onderbreking
+    TRISC2 = 0;
+    TRISC5 = 1; //te testen
+    //solinoide
+    TRISB = 0;//problrrm
+    //buzzer
+    //i2c
+    TRISC3 = 0;//probleem
+    TRISC4 = 0;
+}
 
 
 
@@ -30,53 +51,39 @@
 
 void main()
 { 
-        TRISB1 =0; //cs
-        TRISC3 = 0;
-          TRISC4 = 0;
-
-    TRISB0 =0; //set
-    TRISA1 = 1;
-    ANS1 = 0;
-    
-   
-   
+    init_pinout();
     init_clk(3); 
+   
+
    // interup_off();
-    init_uart(1000000);
-    RB0=0;
-    RB1=1;
-     RC3 = 1;
-     RC4 = 0;
+    //init_uart(1000000);
+    RC3 = 1 ;
   
-    int a;
+    
   do
   {    
-      
-      uart_schrijf(49);
-      __delay_ms(100);
-      /*
-      if(RCIF)
+      if(RA1==1)
       {
-          RC3 = 1;
-           a = uart_lees();
+           TRISB = 0;
+          RB1 = 1;
+          
+          __delay_ms(1000);
           
           
       }
       else
       {
-          RC3 = 0;
-         
+          TRISB = 0;
+          RB2 = 1;
+          
       }
-        
-      if(a ==49)
-      {
-          RC4 == 1;
-          
-          
-      }*/
-    
-
-    
+      //RB0 = RA1;
+      //RB1 = RA1;
+       //RB2 = RA1;
+      //RC3 = RA1 ;
+      //RC4 = RA1 ;
+      //RB4 = RA1 ;
+      
   }while(1);
 }
 //funksie returnt 1 bij de juiste keykart en 0 bij geen of de fuite keykart

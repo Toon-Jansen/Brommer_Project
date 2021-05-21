@@ -77,16 +77,16 @@ void init_clk(int Frek)
     ////////////////////////////////////////////////////////////////////////////
     
     //zet externe klok 1Mhz/////////////////////////////////////////////////////
-    case 2: //ben niet zeker dat deze al goet werkt
+    case 2:
         //zet interne osilator op1MkHz
-        IRCF0 = 1;
+        IRCF0 = 0;
         IRCF1 = 0;
-        IRCF2 = 0;
+        IRCF2 = 1;
          
-        OSTS = 0; // run van inwendige osilator
+        OSTS = 1; // run van inwendige osilator
         HTS = 1; //zet HFinitOSc stabiel
-        LTS = 1; //zet LFinitOSc stabiel
-        SCS = 1; //zet inwendige osilator als sisteem osilator
+        LTS = 0; //zet LFinitOSc stabiel
+        SCS = 0; //zet inwendige osilator als sisteem osilator
     break;
     ////////////////////////////////////////////////////////////////////////////
     
