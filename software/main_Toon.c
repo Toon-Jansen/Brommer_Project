@@ -12,16 +12,62 @@
 #include "hooftcode/header/FUNKSIES_heade.h"
 #include "hooftcode/header/configerasenbits_pic.h"
 
+typedef unsigned char bool;
+#define true    1
+#define false   0
+
+bool beweeg(void){
+    bool detect = false;
+    unsigned int waarde[5] = {0,0,0,0,0};
+    unsigned int hoog = 0,buf = 0,laag = 0;
+    for(int i = 0; i < 5; i++)
+    {
+        waarde[i] = lees();
+        __delay_ms(1000);
+    }
+    hoog = waarde[0];
+    laag = waarde[1];
+    if(hoog < laag){
+        buf = hoog;
+        hoog = laag;
+        laag = buf;
+    }
+    for(int i = 0; i < 5; i++)
+    {
+        if(waarde[i] < laag)
+        {
+            laag = waarde[i];
+        }
+        if(waarde[i] > hoog){
+            hoog = waarde[i];
+        }
+    }
+    buf = hoog - laag;
+    if(buf > 600)
+    {
+        detect = true;
+    }
+    return detect;
+}
 void main(void) 
 {
-    //I2C_Initialize(2500); //Initialiseer I2C Master met 125KHz clock
     init_clk(4);
-    TRISB = 0x00;
-    init_piep();
+    I2C_Initialize(2500); //Initialiseer I2C Master met 125KHz clock
+    config_Ac();
+    //TRISB = 0x00;
     while(1)
     {
-       __delay_ms(1);
-       piep(1);
-       __delay_ms(2000);
+        bool detect = false;
+        detect = beweeg();
+        if(detect == 1)
+        {
+            I2C_Begin();
+            I2C_Write(0x00);
+            I2C_End();
+        }else{
+            I2C_Begin();
+            I2C_Write(0xFF);
+            I2C_End();
+        }
     }
 }
