@@ -7,10 +7,8 @@
 
 #include "header_hooftbord.h"
 #include <xc.h>
+#include "hooftcode/header/FUNKSIES_heade.h"
 
-typedef unsigned char bool;
-#define true    1
-#define false   0
 
 //maak nog slot open interupt
 void main(void) 
@@ -19,20 +17,50 @@ void main(void)
    ///variabele main////////////////////////////////////////////////////////////
     int Tijd_brommer_af1 = 0;
     int Tijd_brommer_af2 = 0;
-    int sleutel = 1;
-    bool detect = false;
+   
+
     ////////////////////////////////////////////////////////////////////////////
     //RC2 = RA1;
     
     //inisialisatsie ///////////////////////////////////////////////////////////
     init_Alarmboard();
+
     ////////////////////////////////////////////////////////////////////////////
     while(1)
     {
-        if(sleutel == 1) //kijk of slutel inzet
+        RC2 = beweeg();
+      /*  if(RA0 == 1) //kijk of slutel inzet
         {
             SLOT_aff();
-            while(sleutel == 1)
+            while(RA0 == 1)
+            {
+                
+            }
+        }
+        else
+        {
+            
+           while(RA0 == 0)
+            {
+               if(beweeg()==1)
+               {
+                   
+               }
+               else
+               {
+                   
+               }
+               SLOT_aff();
+               SLOT_op();
+             
+              
+           }
+             
+        }
+        /*if(RA0 == 1) //kijk of slutel inzet
+        {
+            SLOT_aff();
+            while(RA0 == 1)
             {
                 
             }
@@ -53,8 +81,8 @@ void main(void)
                         if(keykard() == 1){SLOT_aff();}//zo ja zet slot af
                        else
                        {
-                            detect = beweeg();
-                            if(detect == 1)
+                            
+                            if(beweeg() == 1)
                             {
                                 for(int j = 0; j < 3; j++)
                                 {
@@ -79,8 +107,8 @@ void main(void)
                 else
                 {
                     //zo nee kijk of de brommer stilstaat
-                    detect = beweeg();
-                    if(detect == 1);//kijk staat de brommer stil
+                    
+                    if(beweeg() == 1);//kijk staat de brommer stil
                     else 
                     {
                         Tijd_brommer_af1 = Tijd_brommer_af1 -1;
@@ -101,7 +129,7 @@ void main(void)
                 __delay_ms(1); //wacht een seconde
             }
 
-        }
+        }*/
     }
     
      

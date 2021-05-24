@@ -6,9 +6,6 @@
 
 #define _XTAL_FREQ 1000000
 
-typedef unsigned char bool;
-#define true    1
-#define false   0
 
 //inisialisatsie////////////////////////////////////////////////////////////////
 void init_Alarmboard(void)
@@ -18,10 +15,11 @@ void init_Alarmboard(void)
     //druknoppern
     TRISA1 = 1; //zet input (is slot knop)
     TRISA2 = 1; //zet input
+    TRISA0 = 1; //zet input
 
     ANS1 = 0; // zet op digital input
     ANS2 = 0; // zet op digital input
-    
+    ANS0 = 0; // zet op digital input
     //solinoide
     TRISB2 = 0; //zet als output
     
@@ -31,7 +29,7 @@ void init_Alarmboard(void)
     
     //hbrug
     
-    TRISA0 = 0; //zet output
+    
     TRISA3 = 0; //zet output
     TRISA4 = 0; //zet output
     
@@ -42,8 +40,8 @@ void init_Alarmboard(void)
 ////////////////////////////////////////////////////////////////////////////////
 
 //kijken of de brommer beweegt /////////////////////////////////////////////////
-bool beweeg(void){
-    bool detect = false;
+int beweeg(void){
+    int detect = 0;
     unsigned int waarde[5] = {0,0,0,0,0};
     unsigned int hoog = 0,buf = 0,laag = 0;
     for(int i = 0; i < 5; i++)
@@ -71,7 +69,7 @@ bool beweeg(void){
     buf = hoog - laag;
     if(buf > 600)
     {
-        detect = true;
+        detect =1;
     }
     return detect;
 }
@@ -89,19 +87,20 @@ int keykard(void)
 //zet slot op //////////////////////////////////////////////////////////////////
 void SLOT_op(void)
 {
-     RC2 = 1;
+     RC2 = 0;
      TRISB = 0;
     RB2 = 1;
     __delay_ms(500);
     while(RA1 == 0)
     {
-        RA0 = 1;
-        __delay_us(200);
-        RA0 = 0;
-        __delay_us(600); 
+        PORTA = PORTA | 0b00010000;
+        __delay_us(300);
+        
+        __delay_us(600);
+        PORTA = PORTA & 0b11101111;
     }
     __delay_ms(500);
-    PORTA = 0x00;
+    
     PORTB = 0;
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -109,14 +108,14 @@ void SLOT_op(void)
 //zet slot af //////////////////////////////////////////////////////////////////
 void SLOT_aff(void)
 {
-    RC2 = 0;
+    RC2 = 1;
        PORTB = 0b000000100;
     __delay_ms(500);
     while(RA1 == 1)
     {
-         PORTA = 0b00010001;
-        __delay_us(200);
-        PORTA = 0b00010000;
+         PORTA = PORTA | 0b00001000;
+        __delay_us(300);
+        PORTA = PORTA & 0b11110111;
         __delay_us(600); 
     }
     __delay_ms(500);
@@ -133,7 +132,7 @@ void init_alarm(void){
     RB5 = 0;
 }
 ////////////////////////////////////////////////////////////////////////////////
-void alarm(short s){
+void alarm(int s){
     RB4 = 0;
     RB5 = 0;
     if(s == 1){
