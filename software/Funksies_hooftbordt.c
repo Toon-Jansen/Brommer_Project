@@ -49,9 +49,9 @@ int beweging(void)
 int keykard(void)
 {
     //moet "1" stuuren waneer inbeweging en een "0" waaneer stilstaat
-    
+    __delay_ms(4000);
     // debie das aan u
-    return 1;
+    return RA2;
 }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -59,7 +59,8 @@ int keykard(void)
 void SLOT_op(void)
 {
      RC2 = 1;
-    PORTB = 0b000000100;
+     TRISB = 0;
+    RB2 = 1;
     __delay_ms(500);
     while(RA1 == 0)
     {

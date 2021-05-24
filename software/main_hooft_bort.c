@@ -4,15 +4,17 @@
  *
  * Created: once upon a time
  */
-/*
+
 #include "header_hooftbord.h"
 #include <xc.h>
 //maak nog slot open interupt
 void main(void) 
 {
-    //variabele main////////////////////////////////////////////////////////////
+    
+   ///variabele main////////////////////////////////////////////////////////////
     int Tijd_brommer_af1 = 0;
     int Tijd_brommer_af2 = 0;
+    int sleutel = 1;
     ////////////////////////////////////////////////////////////////////////////
     //RC2 = RA1;
     
@@ -21,10 +23,10 @@ void main(void)
     ////////////////////////////////////////////////////////////////////////////
     while(1)
     {
-        if(RA2 == 1) //kijk of slutel inzet
+        if(sleutel == 1) //kijk of slutel inzet
         {
             SLOT_aff();
-            while(RA2 == 1)
+            while(sleutel == 1)
             {
                 
             }
@@ -94,4 +96,3 @@ void main(void)
      
     return;
 }
-*/
