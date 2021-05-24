@@ -28,8 +28,7 @@ void main(void)
     ////////////////////////////////////////////////////////////////////////////
     while(1)
     {
-        RC2 = beweeg();
-      /*  if(RA0 == 1) //kijk of slutel inzet
+        if(RA0 == 1) //kijk of slutel inzet
         {
             SLOT_aff();
             while(RA0 == 1)
@@ -39,23 +38,69 @@ void main(void)
         }
         else
         {
-            
            while(RA0 == 0)
             {
-               if(beweeg()==1)
+               if(RC5 == 1)
                {
-                   
+                  if(RA1 == 1)
+                   {
+                       //moter staat op en sleutel af
+                       while(RA1 == 1)
+                       {
+                           
+                            PORTA = PORTA | 0b00001000;
+                            alarm(2);
+                       }
+                       PORTA = PORTA & 0b11110111;
+                       
+                   }
                }
+               //moter staat af en sleutel af
                else
                {
+                   if(RA1 == 1)//slot op
+                   {
+                       if(beweeg() == 1)
+                       {
+                            if(RA2 == 1)//ja
+                            {
+                                SLOT_aff();
+                            }
+                            else
+                            {
+                                for(int x = 0; x<4; x++)
+                                {
+                                    alarm(2);
+                                }
+                               
+                            }
+
+                     }
+                      
+                       
+                   }
+                   else//slot af
+                   {
+                       //kijk keykrt
+                       if(RA2 == 1)//ja
+                       {
+                           __delay_ms(5000);
+                       }
+                       else
+                       {
+                           SLOT_op();
+                       }
+                           
+                   }
+                  
+                       
+                       
+                   
+                   
                    
                }
-               SLOT_aff();
-               SLOT_op();
-             
-              
-           }
-             
+                
+            }
         }
         /*if(RA0 == 1) //kijk of slutel inzet
         {

@@ -67,7 +67,7 @@ int beweeg(void){
         }
     }
     buf = hoog - laag;
-    if(buf > 600)
+    if(buf > 800)
     {
         detect =1;
     }
@@ -100,7 +100,7 @@ void SLOT_op(void)
         PORTA = PORTA & 0b11101111;
     }
     __delay_ms(500);
-    
+    TRISB = 0;
     PORTB = 0;
 }
 ////////////////////////////////////////////////////////////////////////////////
