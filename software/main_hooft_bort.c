@@ -4,7 +4,7 @@
  *
  * Created: once upon a time
  */
-
+/*
 #include "header_hooftbord.h"
 #include <xc.h>
 //maak nog slot open interupt
@@ -15,7 +15,7 @@ void main(void)
     int Tijd_brommer_af2 = 0;
     ////////////////////////////////////////////////////////////////////////////
     //RC2 = RA1;
-    /**/
+    
     //inisialisatsie ///////////////////////////////////////////////////////////
     init_Alarmboard();
     ////////////////////////////////////////////////////////////////////////////
@@ -90,7 +90,8 @@ void main(void)
 
         }
     }
-    /*
-     */
+    
+     
     return;
 }
+*/
