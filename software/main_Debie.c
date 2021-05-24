@@ -11,7 +11,8 @@
  * b) zo nee gaat deze voor 100ms stoppe met kijken
  * 
  */
-/*#include "hooftcode/header/configerasenbits_pic.h"
+/**//*
+#include "hooftcode/header/configerasenbits_pic.h"
 #define _XTAL_FREQ 1000000
 #include <xc.h>
 
@@ -50,79 +51,74 @@ void init_pinout(void)
 
 
 void main()
-{ 
-    init_pinout();
-    init_clk(3); 
+{  init_pinout();
    
-
-   // interup_off();
-    //init_uart(1000000);
-    RC3 = 1 ;
-  
+    init_clk(3);
+    TRISC3 = 0;
+    init_uart(1000000);
+    TRISB = 0;
+    PORTB = 1;
+    RC3 = 1;
     
   do
-  {    
-      if(RA1==1)
+  { /*
+     //key-kart
+     PORTB = 1;
+      for(int x=0; x<1000; x++)
       {
-           TRISB = 0;
-          RB1 = 1;
+          if(uart_kut() == 84)
+          {
+              for(long y =0; y< 10000;y++)
+              {
+                  uart_schrijf(76);
+              }
+           }
+              
+                  
+              __delay_us(1);
+        }
+      
           
-          __delay_ms(1000);
-          
+      
+      PORTB = 3;
+      __delay_ms(50);    */
+     //hooft bort
+  /*   for(int x =0; x<10;x++)
+      {
+        uart_schrijf(84);
+        
+
           
       }
-      else
+      for(int y = 0; y< 50; y++)
       {
-          TRISB = 0;
-          RB2 = 1;
           
+          if(uart_kut() == 76)
+          {
+              RC3 = 0;
+          }
+            __delay_us(100); 
       }
-      //RB0 = RA1;
-      //RB1 = RA1;
-       //RB2 = RA1;
-      //RC3 = RA1 ;
-      //RC4 = RA1 ;
-      //RB4 = RA1 ;
+   
+      
+       
       
   }while(1);
 }
-//funksie returnt 1 bij de juiste keykart en 0 bij geen of de fuite keykart
-/*int ask_KeyKart(void)
+int uart_kut(void) //NOTE kijk eers na dat er data is want anders gaat deze in 
+                     //een loob
 {
-    for(int teller = 0; teller < 2000; teller++) //dient om 2 secont te zoekken 
-                                                 //naar de keykart
-    {
-        
-        if(RCIF == 1 && RCREG == 'L')
-        {
-            int wwachtwoort[6];
-            int corr = 0;
-            uart_schrijf('O');
-            for(int x = 0; x< Wwoort_lente;x++)
-            {
-               wwachtwoort[x] = uart_lees();
-            }
-            
-            for(int x = 0; x< Wwoort_lente;x++)
-            {
-               if(wwachtwoort[x] != Wwoort[x])
-               {
-                   corr = 1;
-               }
-            }
-            if(corr == 0)
-            {
-                return 1;    
-            }
-            
-            
-        }
-        uart_schrijf('T');
-        __delay_ms(1);
-        
-    }
-    return 0;
-    
-    
-    
-}*/
+ 
+  if(RCIF == 0) //kijk of er lees dat ontvange is
+  {
+      return 0;
+  }
+  else
+  {
+      
+      return RCREG; //return de geleze data
+  }
+  
+}
+
+*/
