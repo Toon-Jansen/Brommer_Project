@@ -4,9 +4,14 @@
  *
  * Created: once upon a time
  */
-/*
+
 #include "header_hooftbord.h"
 #include <xc.h>
+
+typedef unsigned char bool;
+#define true    1
+#define false   0
+
 //maak nog slot open interupt
 void main(void) 
 {
@@ -15,6 +20,7 @@ void main(void)
     int Tijd_brommer_af1 = 0;
     int Tijd_brommer_af2 = 0;
     int sleutel = 1;
+    bool detect = false;
     ////////////////////////////////////////////////////////////////////////////
     //RC2 = RA1;
     
@@ -47,9 +53,13 @@ void main(void)
                         if(keykard() == 1){SLOT_aff();}//zo ja zet slot af
                        else
                        {
-                            if(beweging() == 1)
+                            detect = beweeg();
+                            if(detect == 1)
                             {
-                                alarm();
+                                for(int j = 0; j < 3; j++)
+                                {
+                                    alarm(2);
+                                }
 
                             }
                        }
@@ -69,7 +79,8 @@ void main(void)
                 else
                 {
                     //zo nee kijk of de brommer stilstaat
-                    if(beweging() ==1);//kijk staat de brommer stil
+                    detect = beweeg();
+                    if(detect == 1);//kijk staat de brommer stil
                     else 
                     {
                         Tijd_brommer_af1 = Tijd_brommer_af1 -1;
@@ -96,4 +107,3 @@ void main(void)
      
     return;
 }
-*/
