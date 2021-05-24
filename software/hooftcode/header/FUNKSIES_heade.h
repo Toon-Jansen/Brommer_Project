@@ -50,8 +50,8 @@ unsigned short I2C_Read(unsigned short);
 void I2C_End(void);
 void config_Ac(void);
 unsigned int lees(void);
-void init_piep(void);
-void piep(short);
+void init_alarm(void);
+void alarm(int);
 
 void init_uart(int);
 void uart_schrijf(int);

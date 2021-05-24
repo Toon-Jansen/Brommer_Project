@@ -309,6 +309,7 @@ void __interrupt() interupt_Handler(void)
 void I2C_Initialize(const unsigned long feq_K) //Begin I2C com als Master
 {
   TRISC3 = 1;  TRISC4 = 1;  //Maak RC3 en RC4, SDA en SCL, input pins
+  TRISC0 = 1; //interrupt pin 
 
   SSPCON  = 0b00101000;    //enable serial port en gebruik SDA & SCL
                            //master mode speed = FOSC/(4*(SSPADD+1))
@@ -379,7 +380,7 @@ void config_Ac(void){
     I2C_End();
     I2C_Begin();
     I2C_Write(0xD0);
-    I2C_Write(0x37); //interrupt config register
+    I2C_Write(0xB7); //interrupt config register
     I2C_Write(0x30); //zorg dat interrupt pin hoog blijft tot ik reg lees
     I2C_Write(0x01); //genereer int als data klaar staat
     I2C_End();
@@ -405,7 +406,7 @@ unsigned int lees(void){
     I2C_DL = I2C_Read(0);
     I2C_End();
     for(int i = 0; i < 4; i++){
-        //while(RC0 == 0); //wacht tot data klaar staat om gelezen te worden
+        //while(RC0 == 1); //wacht tot data klaar staat om gelezen te worden
         I2C_Begin();
         I2C_Write(0xD0);
         I2C_Write(0x3D);
@@ -428,40 +429,45 @@ unsigned int lees(void){
     return tot;
     }
 
-void init_piep(void){
-    TRISB2 = 0;
+void init_alarm(void){
+    TRISB4 = 0;
     TRISB5 = 0;
-    RB2 = 0;
+    RB4 = 0;
     RB5 = 0;
 }
-
-void piep(short s){
-    RB2 = 0;
+void alarm(int s){
+    int i;
+    TRISB = 0x00;
+    RB4 = 0;
     RB5 = 0;
     if(s == 1){
-        for(short j = 0; j < 3; j++){
-            for(short i = 301; i>0; i--){
-                RB5 = 0;
-                __delay_us(1);
-                RB2 = 1;
-                __delay_us(249);
-                RB2 = 0;
-                __delay_us(1);
-                RB5 = 1;
-                __delay_us(249);
-                RB5 = 0;
-            }
-            __delay_ms(175);
+        //for(j = 3; j>0; j--) ma die telt nie af!!!!!
+        i = 301;
+        while(i>0)
+        {
+            i = i - 1;
+            RB5 = 0;
+            __delay_us(1);
+            RB4 = 1;
+            __delay_us(249);
+            RB4 = 0;
+            __delay_us(1);
+            RB5 = 1;
+            __delay_us(249);
+            RB5 = 0;
         }
+        __delay_ms(175);
     }
     if(s == 2){
-        for(short j = 0; j < 3; j++){
-            for(short i = 1101; i>0; i--){
+        i = 1101;
+            while(i>0)
+            {
+                i = i - 1;
                 RB5 = 0;
                 __delay_us(1);
-                RB2 = 1;
+                RB4 = 1;
                 __delay_us(249);
-                RB2 = 0;
+                RB4 = 0;
                 __delay_us(1);
                 RB5 = 1;
                 __delay_us(249);
@@ -469,7 +475,6 @@ void piep(short s){
             }
             __delay_ms(550);
         }
-    }
 }
 
 void init_uart(int freq)
