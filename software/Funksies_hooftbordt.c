@@ -79,9 +79,9 @@ bool beweeg(void){
 int keykard(void)
 {
     //moet "1" stuuren waneer inbeweging en een "0" waaneer stilstaat
-    
+    __delay_ms(4000);
     // debie das aan u
-    return 1;
+    return RA2;
 }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -89,7 +89,8 @@ int keykard(void)
 void SLOT_op(void)
 {
      RC2 = 1;
-    PORTB = 0b000000100;
+     TRISB = 0;
+    RB2 = 1;
     __delay_ms(500);
     while(RA1 == 0)
     {
@@ -122,6 +123,7 @@ void SLOT_aff(void)
     
 }
 ////////////////////////////////////////////////////////////////////////////////
+
 //alarm/////////////////////////////////////////////////////////////////////////
 void init_alarm(void){
     TRISB4 = 0;
@@ -192,6 +194,7 @@ void I2C_Begin()
   I2C_Hold();  //Wacht tot bus beschikbaar is
   SEN = 1;     //Stuur start conditie
 }
+<<<<<<< HEAD
 void I2C_End()
 {
   I2C_Hold(); //Wacht tot bus beschikbaar is
@@ -285,3 +288,51 @@ unsigned int lees(void){
     }
     return tot;
     }
+=======
+////////////////////////////////////////////////////////////////////////////////
+
+//ref lezen/////////////////////////////////////////////////////////////////////
+int uart_read(void) 
+{ 
+    
+  if(RCIF == 0) //kijk of er lees dat ontvange is
+  {
+      return 0; // zo nee stuur 0 trug
+  }
+  else
+  {
+      RCIF =0;
+      return RCREG; //zo ja return data
+  } 
+}
+////////////////////////////////////////////////////////////////////////////////
+
+//is er een rf kaart////////////////////////////////////////////////////////////
+int ask_rf(void)
+{
+    int kaart = 0;
+    for(int y =0; y<500000 ;y++)
+    {
+        for(int x =0; x<10;x++)
+              {
+                uart_schrijf(84);
+
+
+
+              }
+              for(int y = 0; y< 50; y++)
+              {
+
+                  if(uart_read() == 76)
+                  {
+                      kaart = 1;
+                       RC3 = 0;
+                  }
+                    __delay_us(100); 
+              }
+
+    }
+    return kaart;
+}
+////////////////////////////////////////////////////////////////////////////////
+>>>>>>> b003eaa18f1db570da637131246745fcc7a19753
